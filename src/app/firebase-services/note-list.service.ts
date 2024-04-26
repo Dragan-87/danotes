@@ -16,25 +16,15 @@ export class NoteListService {
   firestore: Firestore = inject(Firestore);
 
   constructor() {
-    this.unsubscribeNotes = onSnapshot(this.getNotesRef(), (list) => {
-      list.forEach((note) => {
-        this.normalNotes.push(this.setNoteObject(note.data(), note.id));
-      })
-    });
+    this.unsubscribeNotes = this.subNotesList();
 
-    this.unsubscribeTrash = onSnapshot(this.getTrashRef(), (list) => {
-      list.forEach((trash) => {
-        this.trashNotes.push(this.setNoteObject(trash.data(), trash.id));
-      });
-    });
+    this.unsubscribeTrash = this.subTrashList();
   }
 
   ngOnDestroy(): void {
-    this.unsubscribeNotes();
-    this.unsubscribeTrash();
+    this.subNotesList();
+    this.subTrashList();
   }
-
-
 
   logout() {
     console.log(this.firestore);
@@ -61,5 +51,21 @@ export class NoteListService {
       content: obj.content || "",
       marked: obj.marked || false
     }
+  }
+
+  subNotesList() {
+    return onSnapshot(this.getNotesRef(), (list) => {
+      list.forEach((note) => {
+        this.normalNotes.push(this.setNoteObject(note.data(), note.id));
+      })
+    });
+  }
+
+  subTrashList() {
+    return onSnapshot(this.getTrashRef(), (list) => {
+      list.forEach((trash) => {
+        this.trashNotes.push(this.setNoteObject(trash.data(), trash.id));
+      });
+    });
   }
 }

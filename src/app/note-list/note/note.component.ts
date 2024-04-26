@@ -11,8 +11,8 @@ export class NoteComponent {
   @Input() note!:Note;
   edit = false;
   hovered = false;
-  
-  constructor(private noteService: NoteListService){}
+
+  constructor(public noteService: NoteListService){}
 
   changeMarkedStatus(){
     this.note.marked = !this.note.marked;
@@ -46,7 +46,7 @@ export class NoteComponent {
   }
 
   saveNote(){
-    
+
   }
 
 }
