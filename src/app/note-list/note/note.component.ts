@@ -34,19 +34,25 @@ export class NoteComponent {
   }
 
   moveToTrash(){
-    this.note.type = 'trash';
+    if (this.note.id) {
+      this.note.type = 'trash';
+      let docId = this.note.id;
+      delete this.note.id;
+      this.noteService.addNoteToFirestore(this.note, "trash");
+      this.noteService.deleteNoteFromFirestore("notes", docId);
+    }
   }
 
   moveToNotes(){
     this.note.type = 'note';
   }
 
-  deleteNote(){
+  deleteNote() {
 
   }
 
   saveNote(){
-
+    this.noteService.updateNoteInFirestore(this.note);
   }
 
 }

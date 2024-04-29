@@ -1,5 +1,4 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { Note } from '../interfaces/note.interface';
 import { NoteListService } from '../firebase-services/note-list.service'
 
 @Component({
@@ -20,8 +19,16 @@ export class AddNoteDialogComponent {
     this.addDialogClosed.emit(false);
   }
 
-  addNote(){
-    //beachte das closeDialog() zum Schluss kommt, denn es leert die Variablen
+  /**
+   * Adds a note to the Firestore database.
+   */
+  addNote() {
+    this.noteService.addNoteToFirestore({
+      title: this.title,
+      content: this.description,
+      marked: false,
+      type: "note"
+    })
     this.closeDialog();
   }
 }
